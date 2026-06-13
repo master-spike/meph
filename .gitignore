@@ -43,3 +43,4 @@ coverage/
 *.old
 
 tmp/
+compile_commands.json

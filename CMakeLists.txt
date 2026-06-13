@@ -36,7 +36,7 @@ FetchContent_MakeAvailable(Catch2)
 
 # Test executable
 add_executable(test_core
-    test/test_core.cpp
+    test/core/test_scheduler.cpp
 )
 
 target_link_libraries(test_core PRIVATE core Catch2::Catch2WithMain)
