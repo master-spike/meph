@@ -63,7 +63,7 @@ void Scheduler::clean_top()
 {
   while (!m_queue.empty())
   {
-    const auto& [__, sequence_number, entity] = m_queue.top();
+    const auto& [_, sequence_number, entity] = m_queue.top();
     const auto it = m_valid_map.find(entity);
     if (it != m_valid_map.cend() && sequence_number == it->second.second)
     {
