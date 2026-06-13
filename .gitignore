@@ -1,0 +1,45 @@
+
+# Generated files
+build/
+dist/
+out/
+bin/
+obj/
+target/
+
+# Rust
+/Cargo.lock
+!Cargo.lock
+
+# Logs
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Editor settings
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Environment
+.env
+.env.*
+!*.example
+
+# Test/cache
+.pytest_cache/
+.coverage
+coverage/
+.cache/
+
+# Game assets/build artifacts
+*.tmp
+*.bak
+*.old
+
+tmp/
