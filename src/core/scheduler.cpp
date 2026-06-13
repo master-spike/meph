@@ -12,6 +12,7 @@ void Scheduler::enqueue_entity(Entity entity, Tick delay)
   m_valid_map.insert_or_assign(entity, std::make_pair(scheduled_tick, entity_sequence_number));
   m_queue.emplace(scheduled_tick, entity_sequence_number, entity);
   ++m_sequence_number;
+  clean_top();
 }
 
 void Scheduler::dequeue_entity(Entity entity)

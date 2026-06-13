@@ -77,16 +77,16 @@ TEST_CASE("Entities should be popped in scheduled order", "[scheduler]")
 
   REQUIRE(scheduler.peek_entity() == std::make_pair(5, entity2));
 
-  REQUIRE(scheduler.pop_entity().value() == entity2);
+  REQUIRE(scheduler.pop_entity() == entity2);
   REQUIRE(scheduler.current_tick() == 5);
 
-  REQUIRE(scheduler.pop_entity().value() == entity4);
+  REQUIRE(scheduler.pop_entity() == entity4);
   REQUIRE(scheduler.current_tick() == 5);
 
-  REQUIRE(scheduler.pop_entity().value() == entity3);
+  REQUIRE(scheduler.pop_entity() == entity3);
   REQUIRE(scheduler.current_tick() == 15);
 
-  REQUIRE(scheduler.pop_entity().value() == entity1);
+  REQUIRE(scheduler.pop_entity() == entity1);
   REQUIRE(scheduler.current_tick() == 20);
 
   REQUIRE(scheduler.pop_entity() == std::nullopt);
@@ -107,14 +107,31 @@ TEST_CASE("Rescheduling should overwrite existing entity's schedule", "[schedule
   REQUIRE(scheduler.get_scheduled_tick(entity1) == 1);
   REQUIRE(scheduler.peek_entity() == std::make_pair(1, entity1));
 
-  REQUIRE(scheduler.pop_entity().value() == entity1);
+  REQUIRE(scheduler.pop_entity() == entity1);
   REQUIRE(scheduler.current_tick() == 1);
 
-  REQUIRE(scheduler.pop_entity().value() == entity2);
+  REQUIRE(scheduler.pop_entity() == entity2);
   REQUIRE(scheduler.current_tick() == 5);
 
   REQUIRE(scheduler.pop_entity() == std::nullopt);
   REQUIRE(scheduler.current_tick() == 5);
+}
+
+TEST_CASE("Rescheduling an entity should leave a tombstone", "[scheduler]")
+{
+  meph::Scheduler scheduler;
+  meph::Entity entity1 = 1;
+  meph::Entity entity2 = 2;
+
+  scheduler.enqueue_entity(entity1, 1);
+  scheduler.enqueue_entity(entity2, 5);
+
+  scheduler.enqueue_entity(entity1, 10);
+
+  REQUIRE(scheduler.peek_entity() == std::make_pair(5, entity2));
+  REQUIRE(scheduler.pop_entity() == 2);
+
+  REQUIRE(scheduler.peek_entity() == std::make_pair(10, entity1));
 }
 
 TEST_CASE("Descheduling should remove entity from the queue", "[scheduler]")
@@ -133,10 +150,10 @@ TEST_CASE("Descheduling should remove entity from the queue", "[scheduler]")
   REQUIRE(scheduler.get_scheduled_tick(entity2) == std::nullopt);
   REQUIRE(scheduler.peek_entity() == std::make_pair(10, entity1));
 
-  REQUIRE(scheduler.pop_entity().value() == entity1);
+  REQUIRE(scheduler.pop_entity() == entity1);
   REQUIRE(scheduler.current_tick() == 10);
 
-  REQUIRE(scheduler.pop_entity().value() == entity3);
+  REQUIRE(scheduler.pop_entity() == entity3);
   REQUIRE(scheduler.current_tick() == 15);
 
   REQUIRE(scheduler.pop_entity() == std::nullopt);
@@ -160,10 +177,10 @@ TEST_CASE("Descheduling should be a no-op if the entity doesn't exist", "[schedu
   REQUIRE(scheduler.get_scheduled_tick(non_existent) == std::nullopt);
   REQUIRE(scheduler.peek_entity() == std::make_pair(5, entity2));
 
-  REQUIRE(scheduler.pop_entity().value() == entity2);
+  REQUIRE(scheduler.pop_entity() == entity2);
   REQUIRE(scheduler.current_tick() == 5);
 
-  REQUIRE(scheduler.pop_entity().value() == entity1);
+  REQUIRE(scheduler.pop_entity() == entity1);
   REQUIRE(scheduler.current_tick() == 10);
 
   REQUIRE(scheduler.pop_entity() == std::nullopt);
