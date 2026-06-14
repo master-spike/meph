@@ -14,7 +14,7 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
 
 # Core library
 add_library(core
-    src/core/scheduler.cpp
+    src/core/Scheduler.cpp
 )
 
 target_include_directories(core PUBLIC
@@ -36,7 +36,7 @@ FetchContent_MakeAvailable(Catch2)
 
 # Test executable
 add_executable(test_core
-    test/core/test_scheduler.cpp
+    test/core/scheduler/test_Scheduler.cpp
 )
 
 target_link_libraries(test_core PRIVATE core Catch2::Catch2WithMain)
