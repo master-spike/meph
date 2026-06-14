@@ -1,9 +1,12 @@
-#include "meph/core/scheduler.hpp"
+#include "meph/core/scheduler/Scheduler.hpp"
 #include <catch2/catch_test_macros.hpp>
+
+using meph::core::Entity;
+using meph::core::scheduler::Scheduler;
 
 TEST_CASE("Scheduler initialization", "[scheduler]")
 {
-  meph::Scheduler scheduler;
+  Scheduler scheduler;
   REQUIRE(scheduler.current_tick() == 0);
   REQUIRE(scheduler.pop_entity() == std::nullopt);
   REQUIRE(scheduler.current_tick() == 0);
@@ -11,8 +14,8 @@ TEST_CASE("Scheduler initialization", "[scheduler]")
 
 TEST_CASE("Entity enqueueing", "[scheduler]")
 {
-  meph::Scheduler scheduler;
-  meph::Entity entity1 = 42;
+  Scheduler scheduler;
+  Entity entity1 = 42;
   scheduler.enqueue_entity(entity1, 10);
   REQUIRE(scheduler.current_tick() == 0);
   REQUIRE(scheduler.peek_entity() == std::make_pair(10, entity1));
@@ -24,10 +27,10 @@ TEST_CASE("Entity enqueueing", "[scheduler]")
 
 TEST_CASE("Stable insertion", "[scheduler]")
 {
-  meph::Scheduler scheduler;
-  meph::Entity entity1 = 1;
-  meph::Entity entity2 = 2;
-  meph::Entity entity3 = 3;
+  Scheduler scheduler;
+  Entity entity1 = 1;
+  Entity entity2 = 2;
+  Entity entity3 = 3;
 
   scheduler.enqueue_entity(entity1, 10);
   scheduler.enqueue_entity(entity2, 10);
@@ -46,9 +49,9 @@ TEST_CASE("Stable insertion", "[scheduler]")
 
 TEST_CASE("Enqueueing delay relative to current tick", "[scheduler]")
 {
-  meph::Scheduler scheduler;
-  meph::Entity first = 1;
-  meph::Entity second = 2;
+  Scheduler scheduler;
+  Entity first = 1;
+  Entity second = 2;
 
   scheduler.enqueue_entity(first, 10);
   REQUIRE(scheduler.pop_entity().value() == first);
@@ -64,11 +67,11 @@ TEST_CASE("Enqueueing delay relative to current tick", "[scheduler]")
 
 TEST_CASE("Entities should be popped in scheduled order", "[scheduler]")
 {
-  meph::Scheduler scheduler;
-  const meph::Entity entity1 = 1;
-  const meph::Entity entity2 = 2;
-  const meph::Entity entity3 = 3;
-  const meph::Entity entity4 = 4;
+  Scheduler scheduler;
+  const Entity entity1 = 1;
+  const Entity entity2 = 2;
+  const Entity entity3 = 3;
+  const Entity entity4 = 4;
 
   scheduler.enqueue_entity(entity1, 20);
   scheduler.enqueue_entity(entity2, 5);
@@ -95,9 +98,9 @@ TEST_CASE("Entities should be popped in scheduled order", "[scheduler]")
 
 TEST_CASE("Rescheduling should overwrite existing entity's schedule", "[scheduler]")
 {
-  meph::Scheduler scheduler;
-  meph::Entity entity1 = 1;
-  meph::Entity entity2 = 2;
+  Scheduler scheduler;
+  Entity entity1 = 1;
+  Entity entity2 = 2;
 
   scheduler.enqueue_entity(entity1, 10);
   scheduler.enqueue_entity(entity2, 5);
@@ -119,9 +122,9 @@ TEST_CASE("Rescheduling should overwrite existing entity's schedule", "[schedule
 
 TEST_CASE("Rescheduling an entity should leave a tombstone", "[scheduler]")
 {
-  meph::Scheduler scheduler;
-  meph::Entity entity1 = 1;
-  meph::Entity entity2 = 2;
+  Scheduler scheduler;
+  Entity entity1 = 1;
+  Entity entity2 = 2;
 
   scheduler.enqueue_entity(entity1, 1);
   scheduler.enqueue_entity(entity2, 5);
@@ -136,10 +139,10 @@ TEST_CASE("Rescheduling an entity should leave a tombstone", "[scheduler]")
 
 TEST_CASE("Descheduling should remove entity from the queue", "[scheduler]")
 {
-  meph::Scheduler scheduler;
-  meph::Entity entity1 = 1;
-  meph::Entity entity2 = 2;
-  meph::Entity entity3 = 3;
+  Scheduler scheduler;
+  Entity entity1 = 1;
+  Entity entity2 = 2;
+  Entity entity3 = 3;
 
   scheduler.enqueue_entity(entity1, 10);
   scheduler.enqueue_entity(entity2, 5);
@@ -162,10 +165,10 @@ TEST_CASE("Descheduling should remove entity from the queue", "[scheduler]")
 
 TEST_CASE("Descheduling should be a no-op if the entity doesn't exist", "[scheduler]")
 {
-  meph::Scheduler scheduler;
-  meph::Entity entity1 = 1;
-  meph::Entity entity2 = 2;
-  meph::Entity non_existent = 3;
+  Scheduler scheduler;
+  Entity entity1 = 1;
+  Entity entity2 = 2;
+  Entity non_existent = 3;
 
   scheduler.enqueue_entity(entity1, 10);
   scheduler.enqueue_entity(entity2, 5);

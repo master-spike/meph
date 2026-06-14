@@ -1,4 +1,4 @@
-#include "types.hpp"
+#include "meph/core/types.hpp"
 
 #include <functional>
 #include <optional>
@@ -8,7 +8,7 @@
 #include <utility>
 #include <vector>
 
-namespace meph
+namespace meph::core::scheduler
 {
 
 class Scheduler
@@ -34,4 +34,4 @@ private:
   void clean_top();
 };
 
-} // namespace meph
+} // namespace meph::core::scheduler

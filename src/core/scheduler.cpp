@@ -1,6 +1,6 @@
-#include "meph/core/scheduler.hpp"
+#include "meph/core/scheduler/Scheduler.hpp"
 
-namespace meph
+namespace meph::core::scheduler
 {
 
 Scheduler::Scheduler() : m_current_tick(0), m_sequence_number(0) {}
@@ -73,4 +73,4 @@ void Scheduler::clean_top()
   }
 }
 
-} // namespace meph
+} // namespace meph::core::scheduler
