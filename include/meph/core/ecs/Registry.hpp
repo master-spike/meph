@@ -49,8 +49,8 @@ public:
 
   void destroy_entity(Entity entity)
   {
-    const auto index = get_entity_index(entity);
-    const auto generation = get_entity_generation(entity);
+    const size_t index = get_entity_index(entity);
+    const size_t generation = get_entity_generation(entity);
     if (is_alive(entity))
     {
       m_free_indices.push_back(index);
