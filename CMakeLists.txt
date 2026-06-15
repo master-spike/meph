@@ -34,7 +34,7 @@ FetchContent_Declare(
 
 FetchContent_MakeAvailable(Catch2)
 
-# Test executable
+# Core test executable
 add_executable(test_core
     test/core/scheduler/test_Scheduler.cpp
 )
@@ -42,4 +42,16 @@ add_executable(test_core
 target_link_libraries(test_core PRIVATE core Catch2::Catch2WithMain)
 
 add_test(NAME CoreTests COMMAND test_core)
+
+# Static tests
+add_library(test_static OBJECT
+    test/core/ecs/static_test_Registry.cpp
+)
+
+add_test(
+    NAME StaticTests
+    COMMAND "${CMAKE_COMMAND}"
+        --build "${CMAKE_BINARY_DIR}"
+        --target test_static
+)
 
