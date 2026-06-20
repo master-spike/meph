@@ -12,7 +12,7 @@ class IComponentPool
 {
 public:
   virtual ~IComponentPool() = default;
-  virtual void remove_entity(Entity entity) = 0;
+  virtual void remove(Entity entity) = 0;
 };
 
 template <typename T> class ComponentPool : public IComponentPool
@@ -36,15 +36,15 @@ public:
   void insert(Entity entity, T&& component)
   {
     const auto it = m_entity_indices.find(entity);
-    if (it == m_entity_indices.cend())
+    if (it != m_entity_indices.cend())
     {
-      m_data[it->second] = std::forward(component);
+      m_data[it->second] = std::forward<T>(component);
     }
     else
     {
       m_entity_indices.emplace(entity, m_data.size());
       m_index_entities.emplace(m_data.size(), entity);
-      m_data.emplace_back(std::forward(component));
+      m_data.emplace_back(std::forward<T>(component));
     }
   }
 
@@ -64,7 +64,7 @@ public:
     {
       const Entity last_entity = m_index_entities.at(last_idx);
       m_index_entities.at(idx) = last_entity;
-      m_entity_indices.at(entity) = idx;
+      m_entity_indices.at(last_entity) = idx;
       std::swap(m_data.at(idx), m_data.back());
     }
 

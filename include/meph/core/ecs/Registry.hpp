@@ -84,7 +84,7 @@ public:
   // Entity must exist
   template <typename C> void set_component(Entity entity, C&& component)
   {
-    get_pool<C>()->insert(entity, std::forward(component));
+    get_pool<C>()->insert(entity, std::forward<C>(component));
     m_signatures[get_entity_index(entity)].set(get_component_id<C>());
   }
 
