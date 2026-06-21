@@ -38,6 +38,7 @@ FetchContent_MakeAvailable(Catch2)
 add_executable(test_core
     test/core/scheduler/test_Scheduler.cpp
     test/core/ecs/test_ComponentPool.cpp
+    test/core/ecs/test_Registry.cpp
 )
 
 target_link_libraries(test_core PRIVATE core Catch2::Catch2WithMain)

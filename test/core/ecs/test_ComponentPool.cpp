@@ -36,7 +36,8 @@ TEST_CASE("ComponentPool updates an existing entity in place", "[component-pool]
   REQUIRE(pool.get(entity) == 20);
 }
 
-TEST_CASE("ComponentPool preserves the moved entity after removing a middle element", "[component-pool]")
+TEST_CASE("ComponentPool preserves the moved entity after removing a middle element",
+          "[component-pool]")
 {
   ComponentPool<int> pool;
   const Entity first = 1;
