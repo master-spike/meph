@@ -41,9 +41,16 @@ add_executable(test_core
     test/core/ecs/test_Registry.cpp
 )
 
+# Utils test executable
+add_executable(test_utils
+  test/utils/test_Result.cpp
+)
+
 target_link_libraries(test_core PRIVATE core Catch2::Catch2WithMain)
+target_link_libraries(test_utils PRIVATE Catch2::Catch2WithMain)
 
 add_test(NAME CoreTests COMMAND test_core)
+add_test(NAME UtilsTests COMMAND test_utils)
 
 # Static tests
 add_library(test_static OBJECT
